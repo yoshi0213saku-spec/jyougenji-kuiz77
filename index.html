@@ -1,0 +1,801 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>常源寺 歴史・文化クイズ | スマホ対応・完全版</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+JP:wght@400;700;900&family=Inter:wght@400;700&display=swap" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <style>
+        /* 伝統色の定義 */
+        :root {
+            --kokia-red: #A13D2D; /* 深緋 - 落ち着いた深い赤 */
+            --kogane-gold: #B4975A; /* 黄金色 - 上品な金 */
+            --sumi-black: #1C1C1C; /* 墨色 - 深みのある黒 */
+            --torinoko-bg: #FAF9F3; /* 鳥の子色 - 和紙の地色 */
+            --shironeri-white: #FFFFFF;
+        }
+
+        * { box-sizing: border-box; }
+        html { scroll-behavior: smooth; }
+        body {
+            background-color: #F0F2F5;
+            margin: 0;
+            font-family: 'Inter', 'Noto Sans JP', sans-serif;
+            color: var(--sumi-black);
+            line-height: 1.7;
+            -webkit-tap-highlight-color: transparent;
+        }
+        .serif { font-family: 'Noto Serif JP', serif; }
+
+        /* Navigation */
+        nav {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            background: rgba(255, 255, 255, 0.98);
+            backdrop-blur: 12px;
+            z-index: 100;
+            border-bottom: 2px solid var(--kogane-gold);
+            padding: 10px 5%;
+        }
+
+        /* Views */
+        .view { transition: opacity 0.5s ease; }
+        .hidden { display: none; opacity: 0; }
+
+        /* Traditional Border Styles */
+        .frame-ornament {
+            position: absolute;
+            width: 35px;
+            height: 35px;
+            border: 2px solid var(--kogane-gold);
+            pointer-events: none;
+            z-index: 5;
+        }
+        .top-left { top: 20px; left: 20px; border-right: none; border-bottom: none; }
+        .top-right { top: 20px; right: 20px; border-left: none; border-bottom: none; }
+        .bottom-left { bottom: 20px; left: 20px; border-right: none; border-top: none; }
+        .bottom-right { bottom: 20px; right: 20px; border-left: none; border-top: none; }
+
+        .slide-section {
+            background-color: var(--torinoko-bg);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            padding: 60px 20px;
+            position: relative;
+            border-bottom: 1px solid #E5E1D8;
+            max-width: 1400px;
+            margin: 0 auto;
+            overflow: hidden;
+        }
+
+        .section-inner-frame {
+            position: absolute;
+            inset: 15px;
+            border: 1px solid rgba(180, 151, 90, 0.2);
+            pointer-events: none;
+        }
+        
+        @media (min-width: 768px) {
+            .slide-section { padding: 80px 5%; }
+            .section-inner-frame { inset: 35px; }
+        }
+
+        /* Enhanced Hero Title Layout */
+        .hero-title-wrapper {
+            position: relative;
+            display: inline-block;
+            padding: 3.5rem 2.5rem;
+            margin: 0 auto;
+        }
+        .hero-title-border {
+            position: absolute;
+            inset: 0;
+            border: 1px solid var(--kogane-gold);
+            opacity: 0.3;
+        }
+        .hero-title-border-inner {
+            position: absolute;
+            inset: 10px;
+            border: 2px solid var(--kogane-gold);
+        }
+
+        .hero-title-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        .hero-sub-label {
+            font-size: clamp(14px, 3vw, 24px);
+            letter-spacing: 0.8em;
+            color: var(--kokia-red);
+            margin-bottom: 1rem;
+            font-weight: 700;
+        }
+        .hero-main-title {
+            font-size: clamp(40px, 14vw, 110px);
+            font-weight: 900;
+            line-height: 1;
+            letter-spacing: 0.2em;
+            color: var(--sumi-black);
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.05);
+        }
+        .hero-quiz-label {
+            font-size: 0.35em;
+            display: block;
+            margin-top: 1.5rem;
+            letter-spacing: 0.4em;
+            color: #555;
+            font-weight: 700;
+        }
+
+        .cta-button {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+            background-color: var(--kokia-red);
+            color: white;
+            padding: 18px 45px;
+            font-size: 1.2rem;
+            font-weight: 700;
+            border-radius: 4px;
+            box-shadow: 0 12px 30px rgba(161, 61, 45, 0.2);
+            transition: all 0.4s ease;
+            cursor: pointer;
+            border: 1px solid rgba(255,255,255,0.1);
+            width: 100%;
+            max-width: 360px;
+            letter-spacing: 0.2em;
+        }
+
+        .cta-button:hover {
+            background-color: #8B3224;
+            transform: translateY(-4px);
+            box-shadow: 0 15px 35px rgba(161, 61, 45, 0.3);
+        }
+
+        /* Card Decoration */
+        .pillar-card {
+            background: white;
+            border: 1px solid #EEE;
+            border-top: 5px solid var(--kogane-gold);
+            transition: all 0.3s ease;
+        }
+        .pillar-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.08);
+        }
+
+        /* Quiz UI */
+        .option-btn { 
+            transition: all 0.3s ease; 
+            min-height: 64px; 
+            border-color: #E2E8F0;
+        }
+        .option-btn:hover { border-color: var(--kogane-gold); background-color: #FAF9F3; }
+        .option-btn:active { background-color: #F3F0E6; transform: scale(0.98); }
+
+        .correct-pulse { animation: correct-flash 0.6s ease-out; }
+        @keyframes correct-flash {
+            0% { background-color: white; }
+            50% { background-color: #ECFDF5; }
+            100% { background-color: white; }
+        }
+
+        /* Indicator Dots */
+        .status-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background-color: #E5E7EB;
+            transition: all 0.3s ease;
+        }
+        .status-dot.active {
+            background-color: var(--kogane-gold);
+            transform: scale(1.4);
+            box-shadow: 0 0 8px rgba(180, 151, 90, 0.5);
+        }
+        .status-dot.correct { background-color: #10B981; }
+        .status-dot.incorrect { background-color: var(--kokia-red); }
+
+        #quiz-progress-bar { transition: width 0.6s cubic-bezier(0.34, 1.56, 0.64, 1); }
+    </style>
+</head>
+<body>
+
+<nav>
+    <div class="max-w-7xl mx-auto flex justify-between items-center px-2 h-14">
+        <button onclick="showView('intro')" class="nav-logo font-black text-slate-800 serif text-lg tracking-tighter hover:opacity-70 transition-all">常源寺 歴史クイズ</button>
+        <button onclick="showView('quiz')" class="bg-slate-900 text-white px-5 py-2 rounded font-bold text-xs hover:bg-black active:scale-95 transition-all serif tracking-widest">開始</button>
+    </div>
+</nav>
+
+<!-- Introduction View -->
+<div id="intro-view" class="view">
+    <div class="main-wrapper pt-14">
+        <!-- Hero Section -->
+        <section class="slide-section text-center">
+            <div class="section-inner-frame"></div>
+            <div class="frame-ornament top-left"></div>
+            <div class="frame-ornament top-right"></div>
+            <div class="frame-ornament bottom-left"></div>
+            <div class="frame-ornament bottom-right"></div>
+
+            <div class="hero-title-wrapper">
+                <div class="hero-title-border"></div>
+                <div class="hero-title-border-inner"></div>
+                <div class="hero-title-container">
+                    <span class="hero-sub-label serif">曹洞宗</span>
+                    <h1 class="hero-main-title serif">
+                        常源寺
+                        <span class="hero-quiz-label serif">歴史・文化クイズ</span>
+                    </h1>
+                </div>
+            </div>
+            
+            <div class="max-w-lg mx-auto">
+                <p class="text-base md:text-xl text-slate-600 font-serif tracking-[0.4em] mb-4 mt-8">郷土の歩み、相木氏の足跡を辿る旅</p>
+                
+                <!-- 監修表記 -->
+                <div class="flex items-center justify-center gap-6 mt-12">
+                    <div class="w-16 h-px bg-slate-300"></div>
+                    <p class="text-xs md:text-sm text-slate-500 serif tracking-[0.5em] font-bold">監修　中島義健</p>
+                    <div class="w-16 h-px bg-slate-300"></div>
+                </div>
+            </div>
+            
+            <div class="mt-16 px-4">
+                <button onclick="showView('quiz')" class="cta-button serif">
+                    <i class="fa-solid fa-pen-nib"></i> クイズに挑戦する
+                </button>
+            </div>
+            
+            <div class="absolute bottom-10 left-1/2 -translate-x-1/2 text-slate-400 animate-bounce text-center">
+                <p class="text-[10px] font-bold mb-1 tracking-widest serif uppercase">Scroll Down</p>
+                <i class="fa-solid fa-chevron-down"></i>
+            </div>
+        </section>
+
+        <!-- Pillars Section -->
+        <section class="slide-section">
+            <div class="section-inner-frame"></div>
+            <h2 class="text-2xl md:text-4xl font-bold border-l-8 border-slate-900 pl-5 mb-10 serif relative z-10 tracking-widest">学びの三つの柱</h2>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8 mt-4 relative z-10">
+                <div class="pillar-card p-6 md:p-8 shadow-sm rounded-sm">
+                    <i class="fa-solid fa-castle text-3xl text-[#B4975A] mb-5"></i>
+                    <h3 class="text-xl font-bold serif mb-4 text-slate-900 tracking-wider">郷土の武将</h3>
+                    <p class="text-sm text-slate-600 leading-relaxed">武田軍先方衆として勇名を馳せた相木市兵衛。領民の安泰を願った慈悲の心と政治の足跡を辿ります。</p>
+                </div>
+                <div class="pillar-card p-6 md:p-8 shadow-sm rounded-sm">
+                    <i class="fa-solid fa-scroll text-3xl text-[#B4975A] mb-5"></i>
+                    <h3 class="text-xl font-bold serif mb-4 text-slate-900 tracking-wider">寺院の興り</h3>
+                    <p class="text-sm text-slate-600 leading-relaxed">幾多の戦乱と火災を乗り越え、法灯を守り抜いた不屈の歩み。常源寺が歩んできた再建の歴史を学びます。</p>
+                </div>
+                <div class="pillar-card p-6 md:p-8 shadow-sm rounded-sm">
+                    <i class="fa-solid fa-dharmachakra text-3xl text-[#B4975A] mb-5"></i>
+                    <h3 class="text-xl font-bold serif mb-4 text-slate-900 tracking-wider">信仰と美術</h3>
+                    <p class="text-sm text-slate-600 leading-relaxed">御本尊の阿弥陀如来や力強い仁王像。境内に静かに佇む仏像や建築に込められた、古からの教えに触れます。</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Stats Section -->
+        <section class="slide-section">
+            <div class="section-inner-frame"></div>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-16 items-center relative z-10">
+                <div class="order-2 md:order-1">
+                    <h2 class="text-2xl md:text-4xl font-bold border-l-8 border-slate-900 pl-5 mb-8 serif tracking-widest">史実に基づく30問</h2>
+                    <p class="text-sm md:text-base mb-10 leading-relaxed text-slate-600 serif">本クイズは「常源寺再建記念発刊資料」に基づき、厳密な考証を経て作成されています。全30問が毎回ランダムに出題され、郷土への理解を深く多角的に養います。</p>
+                    <div class="flex items-center gap-8">
+                        <div class="text-6xl md:text-7xl font-black text-slate-900 serif border-b-4 border-slate-900 pb-2">30</div>
+                        <div class="font-bold text-sm md:text-base serif tracking-[0.2em] leading-loose">全設問数<br><span class="text-[10px] md:text-xs text-slate-400 font-normal tracking-normal">（PDF全資料から網羅的に出題）</span></div>
+                    </div>
+                </div>
+                <div class="bg-white p-6 border-double border-4 border-slate-200 order-1 md:order-2 rounded shadow-xl relative">
+                    <div class="aspect-video bg-slate-50 flex flex-col items-center justify-center text-slate-400 border border-slate-100">
+                        <i class="fa-solid fa-book-open text-6xl mb-4 opacity-20"></i>
+                        <span class="text-sm serif tracking-widest">常源寺再建記念資料</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Final CTA Section -->
+        <section class="slide-section text-center">
+            <div class="section-inner-frame"></div>
+            <div class="frame-ornament bottom-left"></div>
+            <div class="frame-ornament bottom-right"></div>
+            
+            <h2 class="text-3xl md:text-5xl font-black serif mb-10 tracking-[0.2em] text-slate-900">挑戦をお待ちしております</h2>
+            <p class="text-slate-500 mb-14 text-sm md:text-xl serif tracking-[0.2em] leading-loose">郷土の誇りと伝統を、あなたの知識に。</p>
+            <div class="px-4">
+                <button onclick="showView('quiz')" class="cta-button serif">
+                    <i class="fa-solid fa-flag-checkered"></i> クイズを開始する
+                </button>
+            </div>
+            <div class="mt-28 pt-10 border-t border-slate-200 opacity-60">
+                <p class="text-[10px] md:text-xs text-slate-500 italic serif tracking-[0.5em] uppercase">Soto Zen Temple Jogenji History Project</p>
+            </div>
+        </section>
+    </div>
+</div>
+
+<!-- Quiz View Area -->
+<div id="quiz-view" class="view hidden pt-16 md:pt-24 min-h-screen flex flex-col bg-[#F3F4F6]">
+    <div class="max-w-xl mx-auto w-full px-4 mt-8 mb-4">
+        <div class="flex justify-between items-center mb-4">
+            <h2 class="text-sm md:text-lg font-bold serif text-slate-800" id="quiz-progress-text">第 1 / 30 問</h2>
+            <div class="text-xs md:text-sm font-bold text-amber-700 bg-amber-100 px-4 py-1.5 rounded-full border border-amber-200 shadow-sm" id="quiz-score-live">正解: 0</div>
+        </div>
+        
+        <!-- Indicators Grid -->
+        <div id="quiz-status-grid" class="flex flex-wrap gap-1.5 mb-4 justify-center px-2">
+            <!-- dots will be injected here -->
+        </div>
+
+        <div class="h-2 bg-slate-200 rounded-full overflow-hidden shadow-inner">
+            <div id="quiz-progress-bar" class="h-full bg-slate-800" style="width: 3.33%"></div>
+        </div>
+    </div>
+
+    <div class="flex-grow flex items-start justify-center px-4 pb-12">
+        <div id="quiz-card" class="max-w-xl w-full bg-white rounded-xl shadow-2xl p-6 md:p-12 relative overflow-hidden border border-slate-200">
+            <div id="question-area">
+                <span id="quiz-category" class="inline-block px-3 py-1 bg-slate-100 text-slate-600 rounded-md text-[10px] font-bold mb-5 uppercase tracking-[0.2em] border border-slate-200">分類：常源寺史</span>
+                <h3 id="quiz-question-text" class="text-lg md:text-2xl font-bold serif leading-relaxed text-slate-900 mb-10">
+                    読み込み中...
+                </h3>
+                <div id="quiz-options" class="grid gap-4"></div>
+                
+                <div id="quiz-hint" class="mt-10 p-5 bg-blue-50 rounded-lg text-xs text-blue-800 flex gap-4 hidden border border-blue-100 shadow-sm">
+                    <i data-lucide="lightbulb" class="w-5 h-5 flex-shrink-0 text-blue-600"></i>
+                    <p id="quiz-hint-text" class="leading-loose serif"></p>
+                </div>
+            </div>
+
+            <!-- Quiz Feedback Overlay -->
+            <div id="quiz-overlay" class="hidden absolute inset-0 bg-white flex flex-col items-center justify-center p-8 text-center z-20">
+                <div id="quiz-result-icon" class="w-20 h-20 md:w-24 md:h-24 rounded-full flex items-center justify-center mb-8 shadow-sm"></div>
+                <h4 id="quiz-result-title" class="text-2xl md:text-4xl font-bold mb-6 serif tracking-widest"></h4>
+                <div class="max-h-[45vh] overflow-y-auto mb-10 px-6 text-left border-y border-slate-100 py-6 bg-slate-50 rounded">
+                    <p id="quiz-result-rationale" class="text-sm md:text-lg text-slate-700 leading-loose serif"></p>
+                </div>
+                <button id="quiz-next-btn" class="w-full max-w-xs py-5 bg-slate-900 text-white rounded-md font-bold hover:bg-black flex items-center justify-center gap-4 transition-all active:scale-95 shadow-xl serif tracking-widest">
+                    次へ進む <i data-lucide="arrow-right" class="w-6 h-6"></i>
+                </button>
+            </div>
+
+            <!-- Quiz Final Result -->
+            <div id="quiz-final" class="hidden text-center py-8 md:py-14">
+                <div class="text-6xl md:text-8xl text-[#B4975A] mb-8 drop-shadow-sm"><i class="fa-solid fa-trophy"></i></div>
+                <h2 class="text-3xl md:text-5xl font-black serif mb-6 text-slate-900 tracking-widest">クイズ終了</h2>
+                <p class="text-base text-slate-500 mb-10 serif tracking-widest">あなたの最終結果</p>
+                <div class="text-7xl md:text-9xl font-black serif mb-14 text-slate-900 border-b-8 border-slate-900 inline-block px-8 pb-4">
+                    <span id="final-score">0</span><span class="text-2xl md:text-4xl text-slate-300 font-normal mx-4">/</span><span class="text-2xl md:text-4xl text-slate-300 font-normal">30</span>
+                </div>
+                <button onclick="location.reload()" class="w-full max-w-xs py-5 border-2 border-slate-900 rounded-md font-bold text-slate-900 hover:bg-slate-900 hover:text-white transition-all active:scale-95 serif tracking-[0.3em] mt-8">
+                    最初に戻る
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    // Full Quiz Data
+    const quizData = [
+        {
+            question: "常源寺の立地として正しい説明はどれですか。",
+            category: "地理",
+            options: ["北側に川、南に山", "南西に栗生川、背後に峰尾城山", "東に千曲川、西に浅間山", "四方を山に囲まれている"],
+            correct: 1,
+            rationale: "常源寺は南西に栗生川を望み、背後には峰尾城山(峰尾山)がそびえています。",
+            hint: "お寺のすぐ裏手にある山の名前を思い出してください。"
+        },
+        {
+            question: "常源寺の御本尊と脇仏の正しい組み合わせはどれですか。",
+            category: "信仰",
+            options: ["釈迦牟尼仏 ／ 文殊菩薩・普賢菩薩", "阿弥陀如来 ／ 観音菩薩・勢至菩薩", "阿弥陀如来 ／ 文殊菩薩・愛染明王", "薬師如来 ／ 日光菩薩・月光菩薩"],
+            correct: 2,
+            rationale: "本堂の御本尊は阿弥陀如来で、脇仏として文殊菩薩と愛染明王が安置されています。",
+            hint: "中央に安置されているのは阿弥陀如来様です。"
+        },
+        {
+            question: "常源寺の開基であり、「常源寺殿」という法名を持つ人物は誰ですか。",
+            category: "人物",
+            options: ["武田信玄", "依田信濃守常源", "相木市兵衛常喜", "伴野光利"],
+            correct: 2,
+            rationale: "常源寺の開基は相木市兵衛常喜で、没後に「常源寺殿」の法名が授けられました。",
+            hint: "このお寺の創設者となった地元の武将です。"
+        },
+        {
+            question: "常源寺が現在地へ移る前、館と寺の位置関係として正しいものはどれですか。",
+            category: "歴史",
+            options: ["館も寺も同じ場所", "館は日向部落、寺は田屋部落の段丘上", "館は山中、寺は川沿い", "両方とも田屋部落"],
+            correct: 1,
+            rationale: "館は日向部落の段丘上、寺は田屋部落の段丘上にありました。",
+            hint: "かつては二つの部落に分かれて存在していました。"
+        },
+        {
+            question: "山門(三門)の両脇に安置されている像は何ですか。",
+            category: "建築",
+            options: ["狛犬", "四天王", "金剛力士(仁王様)", "十二神将"],
+            correct: 2,
+            rationale: "山門の両脇には、お寺の守護神である金剛力士(仁王様)が安置されています。",
+            hint: "力強い姿で立ち並ぶ一対の像です。"
+        },
+        {
+            question: "仁王像のうち、口を開けた「阿形」が示す教えは何ですか。",
+            category: "教え",
+            options: ["大声で悪を追い払う", "素直な心で仏の教えを受ける", "戦いに備える決意", "一切の迷いを断つ"],
+            correct: 1,
+            rationale: "阿形は、素直な心で仏の教えを外部から受けることを示しています。",
+            hint: "口を開く動作を「教えを受け入れる」ことになぞらえています。"
+        },
+        {
+            question: "「三門」「坐禅の場」が記されていることから、常源寺はどの宗派と考えられますか。",
+            category: "宗派",
+            options: ["浄土宗", "日蓮宗", "禅宗（曹洞宗など）", "真言宗"],
+            correct: 2,
+            rationale: "「坐禅」や「三門」は禅宗寺院の典型的な特徴を示す用語です。",
+            hint: "静かに座って自分と向き合う修行を重視する宗派です。"
+        },
+        {
+            question: "天文16年、相木氏の城を攻めた村上義清に対し、援軍を送った勢力はどこですか。",
+            category: "戦国史",
+            options: ["織田氏", "徳川氏", "関東管領・上杉氏", "北条氏"],
+            correct: 2,
+            rationale: "村上義清の要請に応じ、当時関東に勢力を持っていた関東管領・上杉氏が援軍を出しました。",
+            hint: "関東で当時最も格式高かった役職の家系です。"
+        },
+        {
+            question: "落城後、相木市兵衛常喜が仕えた戦国大名は誰ですか。",
+            category: "歴史",
+            options: ["上杉謙信", "今川義元", "武田信玄(晴信)", "織田信長"],
+            correct: 2,
+            rationale: "落城後、相木市兵衛常喜は甲斐の武田信玄(晴信)に仕えました。",
+            hint: "信州を平定した有名な武将です。"
+        },
+        {
+            question: "相木氏は武田家の中でどのような役割を担いましたか。",
+            category: "歴史",
+            options: ["内政官", "信州先方衆（先陣）", "外交役", "留守役"],
+            correct: 1,
+            rationale: "地元の地理に明るい相木氏は、武田軍の「信州先方衆」として先陣を務める役割を担いました。",
+            hint: "軍の先頭に立って導く重要な役割です。"
+        },
+        {
+            question: "庫裡(くり)の主な役割は何ですか。",
+            category: "建築",
+            options: ["仏像の保管", "住職の生活の場", "修行道場", "鐘楼"],
+            correct: 1,
+            rationale: "庫裡は住職の生活の場(台所や居室など)として使われる建物です。",
+            hint: "寺院内における居住・管理空間です。"
+        },
+        {
+            question: "常源寺第4世住職・節忠禅師の出身はどこですか。",
+            category: "人物史",
+            options: ["小諸城", "前山城", "松本城", "上田城"],
+            correct: 1,
+            rationale: "節忠禅師は、前山城主・伴野光利の子であるとされています。",
+            hint: "伴野氏ゆかりの有名な城です。"
+        },
+        {
+            question: "鐘を三回撞く意味として正しいものはどれですか。",
+            category: "文化",
+            options: ["合図", "念願と仏への供養", "天候祈願", "金運祈願"],
+            correct: 1,
+            rationale: "鐘を三回撞くことには、念願の成就と仏への供養という意味が込められています。",
+            hint: "仏教の三宝（仏・法・僧）への礼敬にも通じます。"
+        },
+        {
+            question: "常源寺に江戸時代以前の古い記録が少ない理由は何ですか。",
+            category: "寺院史",
+            options: ["洪水による流失", "過去の火災による焼失", "地震による崩壊", "戦乱による略奪"],
+            correct: 1,
+            rationale: "過去に発生した大きな火災によって、貴重な記録や資料の多くが失われてしまいました。",
+            hint: "木造寺院にとって最も恐ろしい歴史上の災厄です。"
+        },
+        {
+            question: "相木市兵衛常喜と依田信濃守常源の関係として正しい説明はどれですか。",
+            category: "歴史",
+            options: ["無関係", "主従関係", "同族・系譜上の関係", "敵対関係"],
+            correct: 2,
+            rationale: "両者は名字は異なりますが同族であり、系譜上で深い繋がりがあるとされています。",
+            hint: "血筋として繋がりのある関係です。"
+        },
+        {
+            question: "本資料発刊の理念として掲げられている言葉はどれですか。",
+            category: "理念",
+            options: ["一期一会", "因果応報", "温故知新", "諸行無常"],
+            correct: 2,
+            rationale: "古きをたずねて新しい知恵を得る「温故知新」の精神が理念として掲げられています。",
+            hint: "歴史を学び未来に活かすという意味の四字熟語です。"
+        },
+        {
+            question: "開山堂に安置されている位牌は誰のものですか。",
+            category: "信仰",
+            options: ["将軍家", "開基と歴代住職", "村役人", "七福神"],
+            correct: 1,
+            rationale: "開山堂には、お寺を創った開基(相木氏)と歴代住職の位牌が安置されています。",
+            hint: "お寺の始まりと歴史を支えた人々を祀っています。"
+        },
+        {
+            question: "常源寺以前に存在した寺院として記されているものはどれですか。",
+            category: "歴史",
+            options: ["善光寺", "明王寺", "東大寺", "法隆寺"],
+            correct: 1,
+            rationale: "常源寺が建立される以前には、明王寺という名の寺院が存在したと記されています。",
+            hint: "「五大明王」などの明王を冠した名です。"
+        },
+        {
+            question: "相木市兵衛は武田家臣として何騎を率いましたか。",
+            category: "歴史",
+            options: ["五騎", "八十騎", "百騎", "千騎"],
+            correct: 1,
+            rationale: "史料によると、相木市兵衛は武田家臣として八十騎を率いる規模の武将でした。",
+            hint: "「信州先方衆」としての格を示す数字です。"
+        },
+        {
+            question: "釈迦は何歳で入滅したと説明されていますか。",
+            category: "仏教",
+            options: ["60歳", "70歳", "80歳", "90歳"],
+            correct: 2,
+            rationale: "お釈迦様は80歳でこの世を去られた(入滅した)と伝えられています。",
+            hint: "当時の人間としてはかなりの長寿でした。"
+        },
+        {
+            question: "阿江木氏(相木氏)が大井氏から任されていた領地はどこですか。",
+            category: "歴史",
+            options: ["芹田郷", "志賀郷", "阿江木(相木)郷一帯", "平尾郷"],
+            correct: 2,
+            rationale: "阿江木氏は有力な大井氏の重臣として、阿江木郷一帯を領地として任されていました。",
+            hint: "自身の名字そのものである郷の名前です。"
+        },
+        {
+            question: "経巻を保管する建物は何と呼ばれますか。",
+            category: "建築",
+            options: ["経蔵", "宝物殿", "納骨堂", "茶室"],
+            correct: 0,
+            rationale: "仏教の経典(経巻)を大切に保管する建物は「経蔵」と呼ばれます。",
+            hint: "「経」を収める「蔵」です。"
+        },
+        {
+            question: "相木市兵衛常喜の人物評価として正しいものはどれですか。",
+            category: "人物",
+            options: ["強権的", "無関心", "領民安泰を重んじた", "利己的"],
+            correct: 2,
+            rationale: "相木市兵衛は常に領民の安泰を第一に考えた、慈悲深い武将であったと評価されています。",
+            hint: "地域の人々に慕われた証が残っています。"
+        },
+        {
+            question: "再建記念発刊の目的として正しいものはどれですか。",
+            category: "目的",
+            options: ["観光振興", "感謝と歴史継承", "募金", "人事紹介"],
+            correct: 1,
+            rationale: "本堂再建にあたっての感謝を表し、歴史を正しく次代へ伝えることが目的です。",
+            hint: "お寺の歩みを「語り継ぐ」ことが含まれます。"
+        },
+        {
+            question: "位牌堂と併用されている建物はどれですか。",
+            category: "建築",
+            options: ["山門", "開山堂", "鐘楼", "庫裡"],
+            correct: 1,
+            rationale: "開山堂は、位牌を安置して供養する「位牌堂」としての役割も兼ね備えています。",
+            hint: "歴代住職を供養するためのお堂です。"
+        },
+        {
+            question: "大井氏重臣の席順で、阿江木(相木)氏は何番目ですか。",
+            category: "歴史",
+            options: ["一番", "二番", "三番", "四番"],
+            correct: 1,
+            rationale: "阿江木氏は大井氏の家臣団の中で、二番目の席順を占める有力な存在でした。",
+            hint: "筆頭家臣に次ぐ高い地位です。"
+        },
+        {
+            question: "山門へ続く石段の通路は何と呼ばれますか。",
+            category: "建築",
+            options: ["迷路", "参道", "登山道", "けもの道"],
+            correct: 1,
+            rationale: "寺院にお参りするために整備された正式な通路は「参道」と呼ばれます。",
+            hint: "神聖な場所へ向かうための道です。"
+        },
+        {
+            question: "釈迦が悟った人生の苦しみ(四苦)に含まれるのは何ですか。",
+            category: "仏教",
+            options: ["金銭", "戦争", "生・老・病・死", "不老不死"],
+            correct: 2,
+            rationale: "お釈迦様は、人間が避けられない「生・老・病・死」という四つの苦しみを説かれました。",
+            hint: "人生の根本的な四つの苦悩です。"
+        },
+        {
+            question: "相木氏の居城について、資料上正しい扱いはどれですか。",
+            category: "歴史",
+            options: ["白岩城と明記", "黒岩城と明記", "城名の明確な記載は確認できない", "記述なし"],
+            correct: 2,
+            rationale: "史料を慎重に検討した結果、居城の名称を断定する明確な記載はないとしています。",
+            hint: "史料に忠実であることを重視した記述になっています。"
+        },
+        {
+            question: "永禄10年、相木市兵衛が武田家から受けたものは何ですか。",
+            category: "歴史",
+            options: ["刀", "茶器", "御幣と安堵状", "黄金"],
+            correct: 2,
+            rationale: "武田家から忠誠を認められ、「御幣」と領地支配を認める「安堵状」を授かりました。",
+            hint: "領主としての権利を公式に保証するものです。"
+        }
+    ];
+
+    let currentQ = 0;
+    let score = 0;
+    let audioCtx = null;
+    let localQuizData = [];
+    let results = []; // Array to track correct/incorrect
+
+    // View Management
+    function showView(viewId) {
+        document.getElementById('intro-view').classList.add('hidden');
+        document.getElementById('quiz-view').classList.add('hidden');
+        document.getElementById(viewId + '-view').classList.remove('hidden');
+        window.scrollTo(0,0);
+        
+        if (viewId === 'quiz') {
+            localQuizData = [...quizData];
+            for (let i = localQuizData.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [localQuizData[i], localQuizData[j]] = [localQuizData[j], localQuizData[i]];
+            }
+            currentQ = 0;
+            score = 0;
+            results = new Array(localQuizData.length).fill(null);
+            
+            // Initialize Dots
+            const grid = document.getElementById('quiz-status-grid');
+            grid.innerHTML = '';
+            for (let i = 0; i < localQuizData.length; i++) {
+                const dot = document.createElement('div');
+                dot.className = 'status-dot';
+                dot.id = `dot-${i}`;
+                grid.appendChild(dot);
+            }
+            
+            updateScoreUI();
+            loadQuestion();
+        }
+    }
+
+    function playSound(type) {
+        if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+        if (type === 'correct') {
+            const notes = [523.25, 659.25, 783.99]; 
+            notes.forEach((freq, i) => {
+                const osc = audioCtx.createOscillator();
+                const gain = audioCtx.createGain();
+                osc.type = 'sine';
+                osc.connect(gain);
+                gain.connect(audioCtx.destination);
+                const start = audioCtx.currentTime + (i * 0.1);
+                osc.frequency.setValueAtTime(freq, start);
+                gain.gain.setValueAtTime(0, start);
+                gain.gain.linearRampToValueAtTime(0.2, start + 0.02);
+                gain.gain.exponentialRampToValueAtTime(0.01, start + 0.5);
+                osc.start(start);
+                osc.stop(start + 0.6);
+            });
+        } else {
+            const osc = audioCtx.createOscillator();
+            const gain = audioCtx.createGain();
+            osc.type = 'sawtooth';
+            osc.connect(gain);
+            gain.connect(audioCtx.destination);
+            const now = audioCtx.currentTime;
+            osc.frequency.setValueAtTime(180, now);
+            osc.frequency.linearRampToValueAtTime(120, now + 0.3);
+            gain.gain.setValueAtTime(0, now);
+            gain.gain.linearRampToValueAtTime(0.2, now + 0.05);
+            gain.gain.exponentialRampToValueAtTime(0.01, now + 0.5);
+            osc.start(now);
+            osc.stop(now + 0.5);
+        }
+    }
+
+    function loadQuestion() {
+        const data = localQuizData[currentQ];
+        document.getElementById('quiz-progress-text').innerText = `第 ${currentQ + 1} / ${localQuizData.length} 問`;
+        document.getElementById('quiz-progress-bar').style.width = `${((currentQ + 1) / localQuizData.length) * 100}%`;
+        document.getElementById('quiz-category').innerText = `分類：${data.category}`;
+        document.getElementById('quiz-question-text').innerText = data.question;
+        document.getElementById('quiz-hint-text').innerText = data.hint;
+        document.getElementById('quiz-hint').classList.add('hidden');
+        
+        // Update Dots UI
+        for (let i = 0; i < localQuizData.length; i++) {
+            const dot = document.getElementById(`dot-${i}`);
+            dot.classList.remove('active');
+            if (i === currentQ) dot.classList.add('active');
+        }
+
+        const optionsDiv = document.getElementById('quiz-options');
+        optionsDiv.innerHTML = '';
+        data.options.forEach((opt, idx) => {
+            const btn = document.createElement('button');
+            btn.className = "option-btn w-full p-4 text-left border-2 border-slate-200 rounded-xl font-medium flex justify-between items-center group bg-white shadow-sm serif";
+            btn.innerHTML = `<span>${opt}</span><i data-lucide="chevron-right" class="w-4 h-4 text-slate-300 group-hover:text-amber-600 transition-all"></i>`;
+            btn.onclick = () => checkAnswer(idx);
+            optionsDiv.appendChild(btn);
+        });
+        
+        lucide.createIcons();
+        setTimeout(() => {
+            if (document.getElementById('quiz-overlay').classList.contains('hidden')) {
+                document.getElementById('quiz-hint').classList.remove('hidden');
+            }
+        }, 5000);
+    }
+
+    function checkAnswer(idx) {
+        const data = localQuizData[currentQ];
+        const overlay = document.getElementById('quiz-overlay');
+        const iconDiv = document.getElementById('quiz-result-icon');
+        const title = document.getElementById('quiz-result-title');
+        const rationale = document.getElementById('quiz-result-rationale');
+        const card = document.getElementById('quiz-card');
+        const currentDot = document.getElementById(`dot-${currentQ}`);
+
+        overlay.classList.remove('hidden');
+        if (idx === data.correct) {
+            score++;
+            results[currentQ] = true;
+            updateScoreUI();
+            playSound('correct');
+            title.innerText = "正解です";
+            title.className = "text-xl md:text-3xl font-bold mb-4 serif result-title-correct tracking-[0.3em]";
+            iconDiv.className = "w-16 h-16 md:w-20 md:h-20 rounded-full flex items-center justify-center mb-6 bg-emerald-50 text-emerald-600 border border-emerald-100 shadow-sm";
+            iconDiv.innerHTML = '<i data-lucide="check" class="w-10 h-10"></i>';
+            card.classList.add('correct-pulse');
+            currentDot.classList.add('correct');
+        } else {
+            results[currentQ] = false;
+            playSound('incorrect');
+            title.innerText = "残念";
+            title.className = "text-xl md:text-3xl font-bold mb-4 serif result-title-incorrect tracking-[0.3em]";
+            iconDiv.className = "w-16 h-16 md:w-20 md:h-20 rounded-full flex items-center justify-center mb-6 bg-red-50 text-red-600 border border-red-100 shadow-sm";
+            iconDiv.innerHTML = '<i data-lucide="x" class="w-10 h-10"></i>';
+            card.classList.add('incorrect-shake');
+            currentDot.classList.add('incorrect');
+        }
+        rationale.innerText = data.rationale;
+        lucide.createIcons();
+
+        document.getElementById('quiz-next-btn').onclick = () => {
+            overlay.classList.add('hidden');
+            card.classList.remove('correct-pulse', 'incorrect-shake');
+            currentQ++;
+            if (currentQ < localQuizData.length) loadQuestion();
+            else showFinal();
+        };
+    }
+
+    function updateScoreUI() {
+        document.getElementById('quiz-score-live').innerText = `正解: ${score}`;
+    }
+
+    function showFinal() {
+        document.getElementById('question-area').classList.add('hidden');
+        document.getElementById('quiz-final').classList.remove('hidden');
+        document.getElementById('final-score').innerText = score;
+    }
+
+    lucide.createIcons();
+</script>
+
+</body>
+</html>
